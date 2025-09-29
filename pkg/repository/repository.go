@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/tiagompalte/golang-clean-arch-template/pkg/healthcheck"
+	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
@@ -40,11 +41,11 @@ type RowsMongo interface {
 }
 
 type ResultInsertMongo struct {
-	InsertedID any
+	InsertedID bson.ObjectID
 }
 
 type ResultInsertManyMongo struct {
-	InsertedIDs []any
+	InsertedIDs []bson.ObjectID
 }
 
 type ResultUpdateMongo struct {

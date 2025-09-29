@@ -7,7 +7,6 @@ import (
 	"github.com/tiagompalte/golang-clean-arch-template/internal/app/entity"
 	"github.com/tiagompalte/golang-clean-arch-template/internal/app/protocols"
 	"github.com/tiagompalte/golang-clean-arch-template/pkg/errors"
-	"go.mongodb.org/mongo-driver/v2/bson"
 )
 
 type CreateLogInput struct {
@@ -47,18 +46,13 @@ func (uc CreateLogUseCaseImpl) Execute(ctx context.Context, input CreateLogInput
 		return CreateLogOutput{}, errors.Wrap(err)
 	}
 
-	objectID, ok := id.(bson.ObjectID)
-	if !ok {
-		return CreateLogOutput{}, errors.NewAppInternalServerError()
-	}
-
-	log, err = uc.logRepo.FindByID(ctx, objectID.Hex())
+	log, err = uc.logRepo.FindByID(ctx, id)
 	if err != nil {
 		return CreateLogOutput{}, errors.Wrap(err)
 	}
 
 	return CreateLogOutput{
-		ID:        log.ID.Hex(),
+		ID:        log.ID,
 		CreatedAt: log.CreatedAt,
 		Level:     log.Level,
 		Message:   log.Message,

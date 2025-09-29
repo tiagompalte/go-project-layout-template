@@ -27,7 +27,7 @@ func FindByIDLogHandler(findByIDLogUseCase usecase.FindByIDLogUseCase) server.Ha
 		}
 
 		var response LogResponse
-		response.ID = log.ID.Hex()
+		response.ID = log.ID
 		response.CreatedAt = log.CreatedAt
 		response.Level = log.Level
 		response.Message = log.Message

@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/tiagompalte/golang-clean-arch-template/pkg/errors"
+	"go.mongodb.org/mongo-driver/v2/bson"
 	"go.mongodb.org/mongo-driver/v2/mongo"
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
@@ -58,14 +59,30 @@ func (t *TransactionMongo) Command() ConnectorMongo {
 			if err != nil {
 				return ResultInsertMongo{}, errors.Wrap(err)
 			}
-			return ResultInsertMongo{InsertedID: res.InsertedID}, nil
+
+			insertedID, ok := res.InsertedID.(bson.ObjectID)
+			if !ok {
+				return ResultInsertMongo{}, errors.Wrap(errors.NewAppInternalServerError())
+			}
+
+			return ResultInsertMongo{InsertedID: insertedID}, nil
 		},
 		InsertMany: func(ctx context.Context, collection string, docs []any) (ResultInsertManyMongo, error) {
 			res, err := t.session.Client().Database(t.dbName).Collection(collection).InsertMany(ctx, docs)
 			if err != nil {
 				return ResultInsertManyMongo{}, errors.Wrap(err)
 			}
-			return ResultInsertManyMongo{InsertedIDs: res.InsertedIDs}, nil
+
+			insertedIDs := make([]bson.ObjectID, 0, len(res.InsertedIDs))
+			for _, id := range res.InsertedIDs {
+				insertedID, ok := id.(bson.ObjectID)
+				if !ok {
+					return ResultInsertManyMongo{}, errors.Wrap(errors.NewAppInternalServerError())
+				}
+				insertedIDs = append(insertedIDs, insertedID)
+			}
+
+			return ResultInsertManyMongo{InsertedIDs: insertedIDs}, nil
 		},
 		UpdateOne: func(ctx context.Context, collection string, filter any, update any) (ResultUpdateMongo, error) {
 			res, err := t.session.Client().Database(t.dbName).Collection(collection).UpdateOne(ctx, filter, update)

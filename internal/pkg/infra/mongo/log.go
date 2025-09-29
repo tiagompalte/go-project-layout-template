@@ -11,6 +11,12 @@ import (
 	"go.mongodb.org/mongo-driver/v2/mongo/options"
 )
 
+type logDocument struct {
+	ID      bson.ObjectID `bson:"_id,omitempty"`
+	Message any           `bson:"message"`
+	Level   string        `bson:"level"`
+}
+
 type LogRepository struct {
 	conn       repository.ConnectorMongo
 	collection string
@@ -23,12 +29,18 @@ func NewLogRepository(conn repository.ConnectorMongo) protocols.LogRepository {
 	}
 }
 
-func (r LogRepository) Insert(ctx context.Context, log entity.Log) (any, error) {
-	res, err := r.conn.InsertOne(ctx, r.collection, log)
-	if err != nil {
-		return nil, errors.Wrap(err)
+func (r LogRepository) Insert(ctx context.Context, log entity.Log) (string, error) {
+	logDoc := logDocument{
+		Message: log.Message,
+		Level:   log.Level,
 	}
-	return res.InsertedID, nil
+
+	res, err := r.conn.InsertOne(ctx, r.collection, logDoc)
+	if err != nil {
+		return "", errors.Wrap(err)
+	}
+
+	return res.InsertedID.Hex(), nil
 }
 
 func (r LogRepository) FindAll(ctx context.Context, limit int64) ([]entity.Log, error) {

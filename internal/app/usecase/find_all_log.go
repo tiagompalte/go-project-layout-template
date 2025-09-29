@@ -2,24 +2,18 @@ package usecase
 
 import (
 	"context"
-	"time"
 
+	"github.com/tiagompalte/golang-clean-arch-template/internal/app/entity"
 	"github.com/tiagompalte/golang-clean-arch-template/internal/app/protocols"
+	"github.com/tiagompalte/golang-clean-arch-template/pkg/errors"
 )
 
 type FindAllLogUseCase interface {
-	Execute(ctx context.Context, input FindAllLogInput) ([]FindAllLogOutput, error)
+	Execute(ctx context.Context, input FindAllLogInput) ([]entity.Log, error)
 }
 
 type FindAllLogInput struct {
 	Limit int64
-}
-
-type FindAllLogOutput struct {
-	ID        string
-	CreatedAt time.Time
-	Level     string
-	Message   any
 }
 
 type FindAllLogUseCaseImpl struct {
@@ -32,21 +26,11 @@ func NewFindAllLogUseCaseImpl(logRepo protocols.LogRepository) FindAllLogUseCase
 	}
 }
 
-func (uc FindAllLogUseCaseImpl) Execute(ctx context.Context, input FindAllLogInput) ([]FindAllLogOutput, error) {
+func (uc FindAllLogUseCaseImpl) Execute(ctx context.Context, input FindAllLogInput) ([]entity.Log, error) {
 	logs, err := uc.logRepo.FindAll(ctx, input.Limit)
 	if err != nil {
-		return nil, err
+		return nil, errors.Wrap(err)
 	}
 
-	var result []FindAllLogOutput
-	for _, log := range logs {
-		result = append(result, FindAllLogOutput{
-			ID:        log.ID.Hex(),
-			CreatedAt: log.CreatedAt,
-			Level:     log.Level,
-			Message:   log.Message,
-		})
-	}
-
-	return result, nil
+	return logs, nil
 }
