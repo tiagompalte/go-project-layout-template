@@ -10,9 +10,10 @@ func ProviderSet(
 	config configs.Config,
 	data repository.DataSqlManager,
 ) Migrate {
-	if config.Migrate.DriverName == configs.GolangMigrate {
+	switch config.Migrate.DriverName {
+	case configs.GolangMigrate:
 		return NewGolangMigrate(config)
-	} else if config.Migrate.DriverName == configs.NativeMigrate {
+	case configs.NativeMigrate:
 		file := nativemigrate.NewFileImpl(config.Migrate.PathMigrations)
 		repositoryManager := nativemigrate.NewRepositoryManager(data)
 		return nativemigrate.NewNativeMigrate(file, repositoryManager)

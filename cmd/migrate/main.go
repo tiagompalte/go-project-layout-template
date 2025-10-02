@@ -45,7 +45,7 @@ func main() {
 	}
 
 	if err != nil {
-		log.Fatalf("error to execute comand %s (error: %v)", command, err)
+		log.Fatalf("error to execute command %s (error: %v)", command, err)
 	}
 
 }
