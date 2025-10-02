@@ -9,47 +9,42 @@ import (
 	"github.com/tiagompalte/golang-clean-arch-template/pkg/server"
 )
 
-type CreateLogRequest struct {
-	Level   string `json:"level"`
-	Message any    `json:"message"`
+type CreateNoteRequest struct {
+	Message any `json:"message"`
 }
 
-func (r *CreateLogRequest) toInput() usecase.CreateLogInput {
-	return usecase.CreateLogInput{
-		Level:   r.Level,
+func (r *CreateNoteRequest) toInput() usecase.CreateNoteInput {
+	return usecase.CreateNoteInput{
 		Message: r.Message,
 	}
 }
 
-// @Summary Create Log
-// @Description Create new Log
-// @Tags Log
+// @Summary Create Note
+// @Description Create new Note
+// @Tags Note
 // @Accept json
 // @Produce json
-// @Param new_log body CreateLogRequest true "New Log"
-// @Success 201 {object} LogResponse "Create Log success"
-// @Router /api/v1/logs [post]
-func CreateLogHandler(createLogUseCase usecase.CreateLogUseCase) server.Handler {
+// @Param new_note body CreateNoteRequest true "New Note"
+// @Success 201 {object} NoteResponse "Create Note success"
+// @Router /api/v1/notes [post]
+func CreateNoteHandler(createNoteUseCase usecase.CreateNoteUseCase) server.Handler {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		ctx := r.Context()
 
-		var request CreateLogRequest
+		var request CreateNoteRequest
 		err := json.NewDecoder(r.Body).Decode(&request)
 		if err != nil {
 			return errors.Wrap(err)
 		}
 
-		input := request.toInput()
-
-		output, err := createLogUseCase.Execute(ctx, input)
+		output, err := createNoteUseCase.Execute(ctx, request.toInput())
 		if err != nil {
 			return errors.Wrap(err)
 		}
 
-		response := LogResponse{
+		response := NoteResponse{
 			ID:        output.ID,
 			CreatedAt: output.CreatedAt,
-			Level:     output.Level,
 			Message:   output.Message,
 		}
 

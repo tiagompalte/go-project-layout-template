@@ -2,7 +2,7 @@ package usecase
 
 type UseCase struct {
 	CreateCategoryUseCase
-	CreateLogUseCase
+	CreateNoteUseCase
 	CreateTaskUseCase
 	FindAllCategoryUseCase
 	FindAllTaskUseCase
@@ -16,6 +16,6 @@ type UseCase struct {
 	GenerateUserTokenUseCase
 	FindUserUUIDUseCase
 	UpdateUserNameUseCase
-	FindAllLogUseCase
-	FindByIDLogUseCase
+	FindAllNoteUseCase
+	FindByIDNoteUseCase
 }

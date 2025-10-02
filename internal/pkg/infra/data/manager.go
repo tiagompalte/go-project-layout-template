@@ -19,5 +19,5 @@ type SqlManager struct {
 }
 
 type MongoManager struct {
-	Log func() protocols.LogRepository
+	Note func() protocols.NoteRepository
 }

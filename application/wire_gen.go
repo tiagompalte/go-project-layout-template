@@ -29,8 +29,8 @@ func Build() (App, error) {
 	categoryRepository := sql.NewCategoryRepository(connectorSql)
 	createCategoryUseCase := usecase.NewCreateCategoryUseCaseImpl(categoryRepository)
 	connectorMongo := repository.ProviderConnectorMongoSet(configsConfig)
-	logRepository := mongo.NewLogRepository(connectorMongo)
-	createLogUseCase := usecase.NewCreateLogUseCaseImpl(logRepository)
+	noteRepository := mongo.NewNoteRepository(connectorMongo)
+	createNoteUseCase := usecase.NewCreateNoteUseCaseImpl(noteRepository)
 	dataManager := repository.ProviderDataSqlManagerSet(configsConfig)
 	uowUow := uow.NewUowSql(dataManager)
 	createTaskUseCase := usecase.NewCreateTaskUseCaseImpl(uowUow)
@@ -52,11 +52,11 @@ func Build() (App, error) {
 	generateUserTokenUseCase := usecase.NewGenerateUserTokenUseCaseImpl(authAuth)
 	findUserUUIDUseCase := usecase.NewFindUserUUIDUseCaseImpl(userRepository)
 	updateUserNameUseCase := usecase.NewUpdateUserNameUseCaseImpl(userRepository)
-	findAllLogUseCase := usecase.NewFindAllLogUseCaseImpl(logRepository)
-	findByIDLogUseCase := usecase.NewFindByIDLogUseCaseImpl(logRepository)
+	findAllNoteUseCase := usecase.NewFindAllNoteUseCaseImpl(noteRepository)
+	findByIDNoteUseCase := usecase.NewFindByIDNoteUseCaseImpl(noteRepository)
 	useCase := usecase.UseCase{
 		CreateCategoryUseCase:       createCategoryUseCase,
-		CreateLogUseCase:            createLogUseCase,
+		CreateNoteUseCase:           createNoteUseCase,
 		CreateTaskUseCase:           createTaskUseCase,
 		FindAllCategoryUseCase:      findAllCategoryUseCase,
 		FindAllTaskUseCase:          findAllTaskUseCase,
@@ -70,8 +70,8 @@ func Build() (App, error) {
 		GenerateUserTokenUseCase:    generateUserTokenUseCase,
 		FindUserUUIDUseCase:         findUserUUIDUseCase,
 		UpdateUserNameUseCase:       updateUserNameUseCase,
-		FindAllLogUseCase:           findAllLogUseCase,
-		FindByIDLogUseCase:          findByIDLogUseCase,
+		FindAllNoteUseCase:          findAllNoteUseCase,
+		FindByIDNoteUseCase:         findByIDNoteUseCase,
 	}
 	logLog := log.ProviderSet()
 	app := ProvideApplication(configsConfig, serverServer, useCase, authAuth, logLog)

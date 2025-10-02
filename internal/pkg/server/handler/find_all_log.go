@@ -10,21 +10,20 @@ import (
 	"github.com/tiagompalte/golang-clean-arch-template/pkg/server"
 )
 
-type LogResponse struct {
+type NoteResponse struct {
 	ID        string    `json:"id"`
 	CreatedAt time.Time `json:"created_at"`
-	Level     string    `json:"level"`
 	Message   any       `json:"message"`
 }
 
-// @Summary Find All Logs
-// @Description Find all logs
-// @Tags Log
+// @Summary Find All Notes
+// @Description Find all notes
+// @Tags Note
 // @Produce json
 // @Param limit query int false "Limit" default(100)
-// @Success 200 {object} []LogResponse "Logs list"
-// @Router /api/v1/logs [get]
-func FindAllLogHandler(findAllLogUseCase usecase.FindAllLogUseCase) server.Handler {
+// @Success 200 {object} []NoteResponse "Notes list"
+// @Router /api/v1/notes [get]
+func FindAllNoteHandler(findAllNoteUseCase usecase.FindAllNoteUseCase) server.Handler {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		ctx := r.Context()
 
@@ -36,22 +35,21 @@ func FindAllLogHandler(findAllLogUseCase usecase.FindAllLogUseCase) server.Handl
 			}
 		}
 
-		input := usecase.FindAllLogInput{
+		input := usecase.FindAllNoteInput{
 			Limit: limit,
 		}
 
-		logs, err := findAllLogUseCase.Execute(ctx, input)
+		notes, err := findAllNoteUseCase.Execute(ctx, input)
 		if err != nil {
 			return errors.Wrap(err)
 		}
 
-		resp := make([]LogResponse, len(logs))
-		for i := range logs {
-			resp[i] = LogResponse{
-				ID:        logs[i].ID,
-				CreatedAt: logs[i].CreatedAt,
-				Level:     logs[i].Level,
-				Message:   logs[i].Message,
+		resp := make([]NoteResponse, len(notes))
+		for i := range notes {
+			resp[i] = NoteResponse{
+				ID:        notes[i].ID,
+				CreatedAt: notes[i].CreatedAt,
+				Message:   notes[i].Message,
 			}
 		}
 

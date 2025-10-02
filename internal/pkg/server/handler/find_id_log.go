@@ -8,29 +8,28 @@ import (
 	"github.com/tiagompalte/golang-clean-arch-template/pkg/server"
 )
 
-// @Summary Find Log by ID
-// @Description Find log by ID
-// @Tags Log
+// @Summary Find Note by ID
+// @Description Find Note by ID
+// @Tags Note
 // @Produce json
-// @Param id path string true "Log ID"
-// @Success 200 {object} LogResponse "Log found"
-// @Router /api/v1/logs/{id} [get]
-func FindByIDLogHandler(findByIDLogUseCase usecase.FindByIDLogUseCase) server.Handler {
+// @Param id path string true "Note ID"
+// @Success 200 {object} NoteResponse "Note found"
+// @Router /api/v1/notes/{id} [get]
+func FindByIDNoteHandler(findByIDNoteUseCase usecase.FindByIDNoteUseCase) server.Handler {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		ctx := r.Context()
 
 		id := r.PathValue("id")
 
-		log, err := findByIDLogUseCase.Execute(ctx, id)
+		note, err := findByIDNoteUseCase.Execute(ctx, id)
 		if err != nil {
 			return errors.Wrap(err)
 		}
 
-		var response LogResponse
-		response.ID = log.ID
-		response.CreatedAt = log.CreatedAt
-		response.Level = log.Level
-		response.Message = log.Message
+		var response NoteResponse
+		response.ID = note.ID
+		response.CreatedAt = note.CreatedAt
+		response.Message = note.Message
 
 		err = server.RespondJSON(w, http.StatusOK, response)
 		if err != nil {

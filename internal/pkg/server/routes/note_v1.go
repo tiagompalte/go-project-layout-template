@@ -13,22 +13,22 @@ func CreateGroupLogV1(app application.App) server.GroupRoute {
 		{
 			Path:    "/",
 			Method:  http.MethodPost,
-			Handler: handler.CreateLogHandler(app.UseCase().CreateLogUseCase),
+			Handler: handler.CreateNoteHandler(app.UseCase().CreateNoteUseCase),
 		},
 		{
 			Path:    "/",
 			Method:  http.MethodGet,
-			Handler: handler.FindAllLogHandler(app.UseCase().FindAllLogUseCase),
+			Handler: handler.FindAllNoteHandler(app.UseCase().FindAllNoteUseCase),
 		},
 		{
 			Path:    "/{id}",
 			Method:  http.MethodGet,
-			Handler: handler.FindByIDLogHandler(app.UseCase().FindByIDLogUseCase),
+			Handler: handler.FindByIDNoteHandler(app.UseCase().FindByIDNoteUseCase),
 		},
 	}
 
 	return server.GroupRoute{
-		Path:   "/logs",
+		Path:   "/notes",
 		Routes: routes,
 	}
 }

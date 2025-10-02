@@ -4,9 +4,8 @@ import (
 	"time"
 )
 
-type Log struct {
+type Note struct {
 	ID        string
 	CreatedAt time.Time
-	Level     string
 	Message   any
 }

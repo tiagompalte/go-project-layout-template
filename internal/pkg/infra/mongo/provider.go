@@ -3,5 +3,5 @@ package mongo
 import "github.com/google/wire"
 
 var ProviderSet = wire.NewSet(
-	NewLogRepository,
+	NewNoteRepository,
 )

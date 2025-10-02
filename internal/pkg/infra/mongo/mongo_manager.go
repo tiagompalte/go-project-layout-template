@@ -7,17 +7,17 @@ import (
 )
 
 type manager struct {
-	log protocols.LogRepository
+	note protocols.NoteRepository
 }
 
 func NewRepositoryManager(conn repository.ConnectorMongo) data.Manager[data.MongoManager] {
 	return manager{
-		log: NewLogRepository(conn),
+		note: NewNoteRepository(conn),
 	}
 }
 
 func (m manager) Repository() data.MongoManager {
 	return data.MongoManager{
-		Log: func() protocols.LogRepository { return m.log },
+		Note: func() protocols.NoteRepository { return m.note },
 	}
 }

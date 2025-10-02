@@ -133,16 +133,16 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/v1/logs": {
+        "/api/v1/notes": {
             "get": {
-                "description": "Find all logs",
+                "description": "Find all notes",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Log"
+                    "Note"
                 ],
-                "summary": "Find All Logs",
+                "summary": "Find All Notes",
                 "parameters": [
                     {
                         "type": "integer",
@@ -154,18 +154,18 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Logs list",
+                        "description": "Notes list",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "$ref": "#/definitions/handler.LogResponse"
+                                "$ref": "#/definitions/handler.NoteResponse"
                             }
                         }
                     }
                 }
             },
             "post": {
-                "description": "Create new Log",
+                "description": "Create new Note",
                 "consumes": [
                     "application/json"
                 ],
@@ -173,44 +173,44 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Log"
+                    "Note"
                 ],
-                "summary": "Create Log",
+                "summary": "Create Note",
                 "parameters": [
                     {
-                        "description": "New Log",
-                        "name": "new_log",
+                        "description": "New Note",
+                        "name": "new_note",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/handler.CreateLogRequest"
+                            "$ref": "#/definitions/handler.CreateNoteRequest"
                         }
                     }
                 ],
                 "responses": {
                     "201": {
-                        "description": "Create Log success",
+                        "description": "Create Note success",
                         "schema": {
-                            "$ref": "#/definitions/handler.LogResponse"
+                            "$ref": "#/definitions/handler.NoteResponse"
                         }
                     }
                 }
             }
         },
-        "/api/v1/logs/{id}": {
+        "/api/v1/notes/{id}": {
             "get": {
-                "description": "Find log by ID",
+                "description": "Find Note by ID",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "Log"
+                    "Note"
                 ],
-                "summary": "Find Log by ID",
+                "summary": "Find Note by ID",
                 "parameters": [
                     {
                         "type": "string",
-                        "description": "Log ID",
+                        "description": "Note ID",
                         "name": "id",
                         "in": "path",
                         "required": true
@@ -218,9 +218,9 @@ const docTemplate = `{
                 ],
                 "responses": {
                     "200": {
-                        "description": "Log found",
+                        "description": "Note found",
                         "schema": {
-                            "$ref": "#/definitions/handler.LogResponse"
+                            "$ref": "#/definitions/handler.NoteResponse"
                         }
                     }
                 }
@@ -488,12 +488,9 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.CreateLogRequest": {
+        "handler.CreateNoteRequest": {
             "type": "object",
             "properties": {
-                "level": {
-                    "type": "string"
-                },
                 "message": {}
             }
         },
@@ -511,16 +508,13 @@ const docTemplate = `{
                 }
             }
         },
-        "handler.LogResponse": {
+        "handler.NoteResponse": {
             "type": "object",
             "properties": {
                 "created_at": {
                     "type": "string"
                 },
                 "id": {
-                    "type": "string"
-                },
-                "level": {
                     "type": "string"
                 },
                 "message": {}
