@@ -1,6 +1,6 @@
-# Golang Clean Architecture Template API
+# Go Project Layout Template API
 
-A starter template for building scalable, maintainable, and testable RESTful APIs in Go using the principles of Clean Architecture.
+A starter template for building scalable, maintainable, and testable RESTful APIs in Go using the project layout.
 
 ## Features
 
