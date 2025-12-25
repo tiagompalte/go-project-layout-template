@@ -23,8 +23,8 @@ A starter template for building scalable, maintainable, and testable RESTful API
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/golang-clean-arch-template.git
-cd golang-clean-arch-template
+git clone https://github.com/yourusername/go-project-layout-template.git
+cd go-project-layout-template
 ```
 
 Install dependencies:
